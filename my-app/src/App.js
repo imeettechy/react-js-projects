@@ -1,7 +1,21 @@
 import React, { Component, useState } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Radium, { StyleRoot } from 'radium';
+import styled from 'styled-components';
 
+const StyleButton = styled.button`
+  background-color : ${props => props.alt  ? 'red' : 'green'};
+  color : white;
+  border : 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color : ${props => props.alt  ? 'salmon' : 'lightgreen'};
+    color : black;
+  }
+`;
 
 class App extends Component {
 
@@ -63,12 +77,17 @@ class App extends Component {
 
   render(){
 
-    const style = {
-      backgroundColor : 'white',
-      border : '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
+    // const style = {
+    //   backgroundColor : 'green',
+    //   color : 'white',
+    //   border : '1px solid blue',
+    //   padding: '8px',
+    //   cursor: 'pointer',
+    //   ':hover' : {
+    //     backgroundColor : 'lightgreen',
+    //     color : 'black'
+    //   }
+    // };
 
     let persons = null;
     if(this.state.showPerson) {
@@ -84,24 +103,40 @@ class App extends Component {
               changed={(event) => this.nameChangeHandler(event, per.id)}/>
             })
           }
-
-        
-
       </div>
-      )
+      );
+
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor : 'salmon',
+      //   color : 'black'
+      // }
+
+    }
+
+    let classes = [];
+
+    if(this.state.persons.length <= 2){
+      classes.push('red')
+    }
+    if(this.state.persons.length <= 1){
+      classes.push('bold')
     }
 
     return (
-      <div className="App">
-        <h1>New react App</h1>
-        <p>This is new aPP</p>
-        <button
-          style={style}
-          onClick={ this.toggelePersonHandler}>Switch Name</button>
-          
-        {persons}
-  
-      </div>
+      // <StyleRoot>
+        <div className="App">
+          <h1>New react App</h1>
+          <p className={classes.join(' ')}>This is new aPP</p>
+          <StyleButton
+            alt={this.state.showPerson}
+            // style={style}
+            onClick={ this.toggelePersonHandler}>Switch Name</StyleButton>
+            
+          {persons}
+    
+        </div>
+      // </StyleRoot>
     );
   }
 }
@@ -154,4 +189,5 @@ class App extends Component {
 //   // return React.createElement('div', {App}, React.createElement('h1',null, 'New Native react app!!'));
 // }
 
+// export default Radium(App);
 export default App;
