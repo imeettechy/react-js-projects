@@ -5,6 +5,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/cockpit/cockpit';
 
 import WithClass from '../hoc/WithClass';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
 
@@ -21,7 +22,8 @@ class App extends Component {
     otherState : "SOmethign else",
     showPerson : false,
     showCockpit : true,
-    changeCounter : 0
+    changeCounter : 0,
+    isAuthenticated :  false
   }
 
   static getDerivedStateFromProps(props,state){
@@ -59,6 +61,10 @@ class App extends Component {
     });
   }
 
+  authHandler = () => {
+    this.setState({ isAuthenticated : true });
+  }
+
   componentDidMount(){
     console.log("app js componentdidmount");
   }
@@ -90,18 +96,25 @@ class App extends Component {
           onClick={ () => {
             this.setState({ showCockpit : false})
           }}>Remove Cockpit</button>
-          {
-            this.state.showCockpit ? 
-            <Cockpit 
-            title={this.props.appTitle}
-              showPerson={this.state.showPerson}
-              persons = {this.state.persons} 
-              clicked = {this.toggelePersonHandler} />
-              : null
 
-          }
-          
-          {persons}
+          <AuthContext.Provider value={{
+            authenticated : this.state.isAuthenticated,
+            login : this.authHandler
+          }}>
+            {
+              this.state.showCockpit ? 
+              <Cockpit 
+              title={this.props.appTitle}
+                showPerson={this.state.showPerson}
+                persons = {this.state.persons} 
+                clicked = {this.toggelePersonHandler}
+                />
+                : null
+
+            }
+            
+            {persons}
+          </AuthContext.Provider>
     
         </div>
     );

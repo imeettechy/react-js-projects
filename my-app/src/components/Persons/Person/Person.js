@@ -5,6 +5,10 @@ import styled from 'styled-components';
 
 import Aux from "../../../hoc/Auxillary";
 
+import AuthContext from "../../../context/auth-context";
+
+import PropTypes from "prop-types";
+
 const StyleDiv = styled.div`
     width: 60%;
     margin: 16px auto;
@@ -26,17 +30,29 @@ const style = {
 
 class Person extends Component {
 
-    
+    static contextType = AuthContext;
+
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    componentDidMount() {
+        this.inputElementRef.current.focus();
+        console.log(this.context.authenticated);
+    }
 
     render () {
         console.log("person rendering");
 
         return (
-            <div className={classes.Person}>
-                <p onClick={this.props.click}>I'm {this.props.name}. I'm {this.props.age} years old.</p>
-                <p>{this.props.children}</p>
-                <input type="text" onChange={this.props.changed} value={this.props.name}/>
-            </div>
+        <div className={classes.Person}>
+            {this.context.authenticated ? <p>Authenticated</p> : <p>Please Log In!!</p>}
+            
+            <p onClick={this.props.click}>I'm {this.props.name}. I'm {this.props.age} years old.</p>
+            <p>{this.props.children}</p>
+            <input type="text" ref={this.inputElementRef} onChange={this.props.changed} value={this.props.name}/>
+        </div>
         );
 
         // return (
@@ -75,7 +91,12 @@ class Person extends Component {
 //         )
 // }
 
-
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func
+};
 
 // export default Radium(person);
 export default Person;

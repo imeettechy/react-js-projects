@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useReducer, useRef, useContext } from "react";
 
 import styled from 'styled-components';
+
+import AuthContext from "../../context/auth-context";
 
 const StyleButton = styled.button`
   background-color : ${props => props.altbtn  ? 'red' : 'green'};
@@ -18,12 +20,18 @@ const StyleButton = styled.button`
 
 const Cockpit = (props) => {
 
+    const authContext = React.useContext(AuthContext);
+
+    const toggleBtnRef = useRef(null);
+
     // mutliple useEffects works
     useEffect(() => {
         console.log("cockpit js useEffect");
         // setTimeout(() => {
         //     alert("set data to cloud");
         // }, 1000);
+        toggleBtnRef.current.click();
+
 
         return () => {
             console.log("cockpit useeffect cleanup work");
@@ -44,9 +52,15 @@ const Cockpit = (props) => {
             <h1>{props.title}</h1>
             <p className={classes.join(' ')}>This is new aPP</p>
             <StyleButton
+                ref = {toggleBtnRef}
                 altbtn={props.showPerson}
                 // style={style}
                 onClick={ props.clicked}>Switch Name</StyleButton>
+
+            <AuthContext.Consumer>
+               {(context) => <StyleButton onClick={context.login}>Log In</StyleButton>
+               } 
+            </AuthContext.Consumer>
         </div> 
     );
 };
