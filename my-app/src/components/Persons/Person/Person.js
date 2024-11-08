@@ -16,7 +16,7 @@ const StyleDiv = styled.div`
     }
 `;
 
-const person = (props) => {
+const Person = (props) => {
 
     const style = {
         '@media (min-width: 500px)' : {
@@ -39,4 +39,4 @@ const person = (props) => {
 
 
 // export default Radium(person);
-export default person;
+export default Person;
