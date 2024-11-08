@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import styled from 'styled-components';
 
 const StyleButton = styled.button`
-  background-color : ${props => props.alt  ? 'red' : 'green'};
+  background-color : ${props => props.altbtn  ? 'red' : 'green'};
   color : white;
   border : 1px solid blue;
   padding: 8px;
   cursor: pointer;
   
   &:hover {
-    background-color : ${props => props.alt  ? 'salmon' : 'lightgreen'};
+    background-color : ${props => props.altbtn  ? 'salmon' : 'lightgreen'};
     color : black;
   }
 `;
 
 
 const Cockpit = (props) => {
+
+    // mutliple useEffects works
+    useEffect(() => {
+        console.log("cockpit js useEffect");
+        // setTimeout(() => {
+        //     alert("set data to cloud");
+        // }, 1000);
+
+        return () => {
+            console.log("cockpit useeffect cleanup work");
+        }
+    }, [])
 
     let classes = [];
 
@@ -32,12 +44,12 @@ const Cockpit = (props) => {
             <h1>{props.title}</h1>
             <p className={classes.join(' ')}>This is new aPP</p>
             <StyleButton
-                alt={props.showPerson}
+                altbtn={props.showPerson}
                 // style={style}
                 onClick={ props.clicked}>Switch Name</StyleButton>
         </div> 
     );
 };
 
-export default Cockpit;
+export default React.memo(Cockpit);
 
