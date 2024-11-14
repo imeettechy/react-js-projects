@@ -8,90 +8,11 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withRouter from "../../../hoc/withRouter/withRouter";
 import Input from "../../../components/UI/Input/Input";
 import { elementType } from "prop-types";
+import CHECKOUT_JSON from "./../../../Constants/formControls/checkout.json";
 
 class ContactData extends Component {
     state = {
-        orderForm : {
-            name : {
-                elementType : 'input',
-                elementConfig : {
-                    type: 'text',
-                    placeholder : 'Your Name'
-                },
-                value : '',
-                validation : {
-                    required : true
-                },
-                valid : false,
-                touched : false
-            },
-            street : {
-                elementType : 'input',
-                elementConfig : {
-                    type: 'text',
-                    placeholder : 'Street'
-                },
-                value : '',
-                validation : {
-                    required : true
-                },
-                valid : false,
-                touched : false
-            },
-            pinCode : {
-                elementType : 'input',
-                elementConfig : {
-                    type: 'text',
-                    placeholder : 'ZipCode'
-                },
-                value : '',
-                validation : {
-                    required : true,
-                    minLength : 5,
-                    maxLength : 6
-                },
-                valid : false,
-                touched : false
-            },
-            country : {
-                elementType : 'input',
-                elementConfig : {
-                    type: 'text',
-                    placeholder : 'Country'
-                },
-                value : '',
-                validation : {
-                    required : true
-                },
-                valid : false,
-                touched : false
-            },
-            email : {
-                elementType : 'input',
-                elementConfig : {
-                    type: 'email',
-                    placeholder : 'Your Email'
-                },
-                value : '',
-                validation : {
-                    required : true
-                },
-                valid : false,
-                touched : false
-            },
-            deliveryMethod : {
-                elementType : 'select',
-                elementConfig : {
-                    options : [
-                                {value : 'fastest' , displayValue : 'Fastest'},
-                                {value : 'cheapest' , displayValue : 'Cheapest'},
-                              ]
-                },
-                value : 'fastest',
-                validation : {},
-                valid : true,
-            },
-        },
+        orderForm : CHECKOUT_JSON,
         formIsValid : false,
         loading : false
     }
