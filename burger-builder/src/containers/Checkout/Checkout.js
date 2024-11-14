@@ -4,14 +4,12 @@ import withRouter from '../../hoc/withRouter/withRouter';
 import { Route, Routes } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 
+import { connect } from 'react-redux';
+
 
 class Checkout extends Component {
 
-    state = {
-        ingredients : null,
-        totalPrice : 0
-    }
-
+    /*
     componentWillMount() {
         const query = new URLSearchParams(this.props.router.location.search);
         const ingredients = {};
@@ -26,6 +24,7 @@ class Checkout extends Component {
 
         this.setState({ ingredients : ingredients, totalPrice : price });
     }
+        */
 
     checkoutCancelledHander = () => {
         this.props.router.navigate(-1);
@@ -39,17 +38,23 @@ class Checkout extends Component {
         return (
             <div>
                 <CheckoutSummary 
-                    ingredients={this.state.ingredients}
+                    ingredients={this.props.ings}
                     onCheckoutCancelled={this.checkoutCancelledHander}
                     onCheckoutContinued={this.checkoutContinuedHander}/>
                 <Routes>
                     <Route 
                         path='/contact-data'
-                        element={<ContactData ingredients={this.state.ingredients} totalPrice={this.state.totalPrice} />} />
+                        element={<ContactData />} />
                 </Routes>
             </div>
         )
     }
 }
 
-export default withRouter(Checkout);
+const mapStateToProps = state => {
+    return {
+        ings : state.ingredients
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(Checkout));

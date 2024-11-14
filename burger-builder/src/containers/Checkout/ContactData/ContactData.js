@@ -8,7 +8,9 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import withRouter from "../../../hoc/withRouter/withRouter";
 import Input from "../../../components/UI/Input/Input";
 import { elementType } from "prop-types";
-import CHECKOUT_JSON from "./../../../Constants/formControls/checkout.json";
+import CHECKOUT_JSON from "./../../../constants/formControls/checkout.json";
+
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
     state = {
@@ -49,8 +51,8 @@ class ContactData extends Component {
 
         this.setState({loading : true});
         const order = {
-            ingredients : this.props.ingredients,
-            price : this.props.totalPrice,
+            ingredients : this.props.ings,
+            price : this.props.price,
             orderData : formData
         }
         axios.post('/orders.json', order)
@@ -122,4 +124,12 @@ class ContactData extends Component {
     }
 }
 
-export default withRouter(ContactData);
+const mapStateToProps = state => {
+
+    return {
+        ings : state.ingredients,
+        price : state.totalPrice
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(ContactData));
