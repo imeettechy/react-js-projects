@@ -1,3 +1,5 @@
+import { auth } from './auth';
+
 export {
     addIngredient,
     removeIngredient,
@@ -9,3 +11,10 @@ export {
     purchaseInit,
     fetchOrders
 } from './order';
+
+export {
+    auth,
+    logout,
+    setAuthRedirectPath,
+    authCheckState
+} from './auth';
