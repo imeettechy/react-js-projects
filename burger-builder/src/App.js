@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import Layout from "./hoc/Layout/Layout";
 import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
-import Checkout from "./containers/Checkout/Checkout";
 import { Route, Routes, Navigate } from 'react-router-dom';
-import Orders from "./containers/Orders/Orders";
-import Auth from "./containers/Auth/Auth";
 import Logout from "./containers/Auth/Logout/Logout";
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
-import withRouter from "./hoc/withRouter/withRouter";
+
+const Orders = React.lazy(() => import('./containers/Orders/Orders'));
+const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'));
+const Auth = React.lazy(() => import('./containers/Auth/Auth'));
 
 class App extends Component {
 
@@ -19,23 +19,27 @@ class App extends Component {
   render() {
 
     let routes = (
-      <Routes>
-        <Route path="/" element={<BurgerBuilder />} />
-        <Route path="/auth/*" element={<Auth />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+            <Route path="/" element={<BurgerBuilder />} />
+            <Route path="/auth/*" element={<Auth />} />
+            <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Suspense>
     );
 
     if(this.props.isAuth){
       routes = (
-        <Routes>
-          <Route path="/" element={<BurgerBuilder />} />
-          <Route path="/checkout/*" element={<Checkout />} />
-          <Route path="/orders/*" element={<Orders />} />
-          <Route path="/logout/*" element={<Logout />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+              <Route path="/" element={<BurgerBuilder />} />
+              <Route path="/checkout/*" element={<Checkout />} />
+              <Route path="/orders/*" element={<Orders />} />
+              <Route path="/logout/*" element={<Logout />} />
+              <Route path="/auth/*" element={<Auth />} />
+              <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
       );
     }
     return (

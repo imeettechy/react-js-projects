@@ -10,6 +10,7 @@ import { elementType } from "prop-types";
 import CHECKOUT_JSON from "./../../../constants/formControls/checkout.json";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as  orderActions from './../../../store/actions/index';
+import { updateObject, checkValidity } from "../../../shared/utility";
 
 import { connect } from 'react-redux';
 
@@ -17,28 +18,6 @@ class ContactData extends Component {
     state = {
         orderForm : CHECKOUT_JSON,
         formIsValid : false
-    }
-
-    checkValidity(value, rules) {
-        let isValid = true;
-
-        if(!rules){
-            return isValid;
-        }
-
-        if(rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-
-        return isValid;
     }
 
     orderHandler = (event) => {
@@ -63,17 +42,14 @@ class ContactData extends Component {
     }
 
     inputChangedHandler = (event, inputId) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
-        }
-        const updatedFormEl = {
-            ...updatedOrderForm[inputId]
-        };
-        updatedFormEl.value = event.target.value;
-        updatedFormEl.valid = this.checkValidity(updatedFormEl.value, updatedFormEl.validation);
-        updatedFormEl.touched = true;
-        updatedOrderForm[inputId] = updatedFormEl;
 
+        const updatedFormEl = updateObject(this.state.orderForm[inputId], {
+            value : event.target.value,
+            valid : checkValidity(event.target.value, this.state.orderForm[inputId].validation),
+            touched : true
+        }) ;
+        
+        const updatedOrderForm = updateObject(this.state.orderForm, updatedFormEl);
 
         let formIsValid = true;
         for(let inputId in updatedOrderForm) {
