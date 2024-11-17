@@ -3,25 +3,21 @@ import classes from './Model.module.css'
 import Aux from "../../../hoc/Auxliary/Auxliary";
 import Backdrop from "../Backdrop/Backdrop";
 
-class Model extends Component {
+const Model = props => {
 
-    shouldComponentUpdate(nextProp, nextState){
-        return nextProp.show !== this.props.show || nextProp.children !== this.props.children;
-    }
-
-    render(){
-        return <Aux>
-            <Backdrop show={this.props.show} clicked={this.props.modelClosed}/>
-            <div className={classes.Modal}
-                style={{
-                    transform : this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                    opacity : this.props.show ? '1' : '0',
-                }}>
-                {this.props.children}
-            </div>
-        </Aux>
-    }
+    return <Aux>
+        <Backdrop show={props.show} clicked={props.modelClosed}/>
+        <div className={classes.Modal}
+            style={{
+                transform : props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                opacity : props.show ? '1' : '0',
+            }}>
+            {props.children}
+        </div>
+    </Aux>
     
 };
 
-export default Model;
+export default React.memo(Model, (prevProps, nextProps) => (
+    nextProps.show === prevProps.show && nextProps.children === prevProps.children
+));
